@@ -25,6 +25,8 @@ import { useNavigate } from "@tanstack/react-router";
 import { useTheme as useAppTheme } from "@/hooks/use-theme";
 import { clearAuthTokens } from "@/lib/auth";
 
+import Breadcrumb from "./Breadcrumb";
+
 const Header = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
@@ -68,11 +70,9 @@ const Header = () => {
         {/* Spacer for mobile menu button */}
         {isMobile && <Box sx={{ width: 56 }} />}
 
-        {/* Title or Breadcrumb */}
+        {/* Dynamic Breadcrumb */}
         <Box sx={{ flexGrow: 1 }}>
-          <Typography variant="h6" component="h1" fontWeight={600}>
-            Dashboard
-          </Typography>
+          <Breadcrumb />
         </Box>
 
         {/* Theme Toggle */}
