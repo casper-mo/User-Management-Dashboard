@@ -1,0 +1,24 @@
+{
+  "welcome": "Hello",
+  "auth": {
+    "welcomeBack": "Welcome Back!",
+    "please_login_to_your_account": "Please login to your account",
+    "signIn": {
+      "title": "Sign in ",
+      "emailLabel": "Email",
+      "passwordLabel": "Password",
+      "forgotPassword": "Forgot your Password?",
+      "signInButton": "SIGN IN"
+    },
+    "validation": {
+      "emailRequired": "Email is required",
+      "invalidEmail": "Invalid email address",
+      "passwordRequired": "Password is required",
+      "passwordMinLength": "Password must be at least 6 characters"
+    },
+    "errors": {
+      "signInFailed": "Failed to sign in. Please try again.",
+      "invalidCredentials": "Invalid email or password"
+    }
+  }
+}
