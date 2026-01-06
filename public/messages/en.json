@@ -20,5 +20,52 @@
       "signInFailed": "Failed to sign in. Please try again.",
       "invalidCredentials": "Invalid email or password"
     }
+  },
+  "profile": {
+    "title": "Profile Settings",
+    "tabs": {
+      "personal": "Personal Information",
+      "professional": "Professional Information"
+    },
+    "fields": {
+      "name": "Full Name",
+      "phone": "Phone Number",
+      "address": "Address",
+      "jobTitle": "Job Title",
+      "yearsOfExperience": "Years of Experience",
+      "workingHours": "Working Hours (per week)"
+    },
+    "placeholders": {
+      "name": "Enter your full name",
+      "phone": "+1 (555) 000-0000",
+      "address": "Enter your address",
+      "jobTitle": "e.g., Software Engineer",
+      "yearsOfExperience": "e.g., 5",
+      "workingHours": "e.g., 40"
+    },
+    "buttons": {
+      "save": "Save Changes",
+      "saving": "Saving..."
+    },
+    "validation": {
+      "nameRequired": "Name is required",
+      "nameMinLength": "Name must be at least 2 characters",
+      "phoneRequired": "Phone number is required",
+      "phoneInvalid": "Invalid phone number format",
+      "addressRequired": "Address is required",
+      "jobTitleRequired": "Job title is required",
+      "yearsRequired": "Years of experience is required",
+      "yearsMin": "Years of experience must be at least 0",
+      "yearsMax": "Years of experience must be less than 100",
+      "workingHoursRequired": "Working hours is required",
+      "workingHoursMin": "Working hours must be at least 1",
+      "workingHoursMax": "Working hours must be less than 168"
+    },
+    "success": {
+      "saved": "Profile updated successfully!"
+    },
+    "errors": {
+      "saveFailed": "Failed to update profile. Please try again."
+    }
   }
 }
