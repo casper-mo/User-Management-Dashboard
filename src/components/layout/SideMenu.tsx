@@ -1,5 +1,6 @@
 import {
   Close as CloseIcon,
+  Home,
   Menu as MenuIcon,
   People as PeopleIcon,
 } from "@mui/icons-material";
@@ -16,7 +17,7 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material";
-import { Link, useMatchRoute } from "@tanstack/react-router";
+import { Link } from "@tanstack/react-router";
 
 interface MenuItem {
   path: string;
@@ -25,6 +26,11 @@ interface MenuItem {
 }
 
 const menuItems: MenuItem[] = [
+  {
+    path: "/",
+    label: "Dashboard",
+    icon: <Home />,
+  },
   {
     path: "/users",
     label: "Users",
@@ -42,13 +48,8 @@ interface SideMenuProps {
 const SideMenu = ({ open, onClose, onOpen }: SideMenuProps) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
-  const matchRoute = useMatchRoute();
 
   const drawerWidth = 280;
-
-  const isActiveRoute = (path: string) => {
-    return !!matchRoute({ to: path, fuzzy: true });
-  };
 
   const menuContent = (
     <Box
@@ -92,7 +93,6 @@ const SideMenu = ({ open, onClose, onOpen }: SideMenuProps) => {
       <Box sx={{ flexGrow: 1, overflow: "auto", py: 2 }}>
         <List>
           {menuItems.map((item) => {
-            const isActive = isActiveRoute(item.path);
             return (
               <ListItem key={item.path} disablePadding sx={{ px: 2, mb: 1 }}>
                 <ListItemButton
@@ -101,28 +101,36 @@ const SideMenu = ({ open, onClose, onOpen }: SideMenuProps) => {
                   onClick={isMobile ? onClose : undefined}
                   sx={{
                     borderRadius: 1,
-                    bgcolor: isActive ? "primary.main" : "transparent",
-                    color: isActive ? "primary.contrastText" : "text.primary",
+                    bgcolor: "transparent",
+                    color: "text.primary",
                     "&:hover": {
-                      bgcolor: isActive ? "primary.dark" : "action.hover",
+                      bgcolor: "action.hover",
+                    },
+                    '&[data-status="active"]': {
+                      bgcolor: "primary.main",
+                      color: "primary.contrastText",
+                      "&:hover": {
+                        bgcolor: "primary.dark",
+                      },
+                      "& .MuiListItemIcon-root": {
+                        color: "inherit",
+                      },
+                      "& .MuiListItemText-primary": {
+                        fontWeight: 600,
+                      },
                     },
                     transition: "all 0.2s",
                   }}
                 >
                   <ListItemIcon
                     sx={{
-                      color: isActive ? "inherit" : "text.secondary",
+                      color: "text.secondary",
                       minWidth: 40,
                     }}
                   >
                     {item.icon}
                   </ListItemIcon>
-                  <ListItemText
-                    primary={item.label}
-                    primaryTypographyProps={{
-                      fontWeight: isActive ? 600 : 400,
-                    }}
-                  />
+                  <ListItemText primary={item.label} />
                 </ListItemButton>
               </ListItem>
             );
@@ -158,11 +166,11 @@ const SideMenu = ({ open, onClose, onOpen }: SideMenuProps) => {
           onClick={onOpen}
           sx={{
             position: "fixed",
-            top: 16,
-            left: 16,
+            top: 10,
+            start: 25,
             zIndex: 1200,
             bgcolor: "background.paper",
-            boxShadow: 2,
+            // boxShadow: 2,
             "&:hover": {
               bgcolor: "background.paper",
             },
