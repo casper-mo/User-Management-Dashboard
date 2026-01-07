@@ -23,7 +23,6 @@ A modern, full-featured user management dashboard built with React, TypeScript, 
 - [Testing](#-testing)
 - [Authentication](#-authentication)
 - [Internationalization](#-internationalization)
-- [Deployment](#-deployment)
 - [Contributing](#-contributing)
 
 ## ✨ Features
