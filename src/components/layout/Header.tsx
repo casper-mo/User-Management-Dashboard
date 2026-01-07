@@ -101,6 +101,7 @@ const Header = () => {
           onClick={handleMenuOpen}
           size="small"
           sx={{ ml: 1 }}
+          aria-label="account menu"
           aria-controls={anchorEl ? "user-menu" : undefined}
           aria-haspopup="true"
           aria-expanded={anchorEl ? "true" : undefined}
