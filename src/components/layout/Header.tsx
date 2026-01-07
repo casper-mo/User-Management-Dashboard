@@ -23,7 +23,7 @@ import {
 import { useNavigate } from "@tanstack/react-router";
 
 import { useTheme as useAppTheme } from "@/hooks/use-theme";
-import { clearAuthTokens } from "@/lib/auth";
+import { clearAllAuthData, getUser } from "@/lib/auth";
 
 import Breadcrumb from "./Breadcrumb";
 
@@ -33,6 +33,17 @@ const Header = () => {
   const { mode, toggleTheme } = useAppTheme();
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+
+  const user = getUser();
+
+  const getUserInitials = () => {
+    if (!user?.name) return "U";
+    const nameParts = user.name.split(" ");
+    if (nameParts.length >= 2) {
+      return `${nameParts[0][0]}${nameParts[1][0]}`.toUpperCase();
+    }
+    return user.name.substring(0, 2).toUpperCase();
+  };
 
   const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -49,7 +60,7 @@ const Header = () => {
 
   const handleLogout = () => {
     handleMenuClose();
-    clearAuthTokens();
+    clearAllAuthData();
     navigate({ to: "/login" });
   };
 
@@ -101,7 +112,7 @@ const Header = () => {
               bgcolor: "primary.main",
             }}
           >
-            U
+            {getUserInitials()}
           </Avatar>
         </IconButton>
 
@@ -137,19 +148,17 @@ const Header = () => {
             },
           }}
         >
-          {/* User Info */}
           <Box sx={{ px: 2, py: 1.5 }}>
             <Typography variant="subtitle2" fontWeight={600}>
-              John Doe
+              {user?.name || "User"}
             </Typography>
             <Typography variant="body2" color="text.secondary">
-              john.doe@example.com
+              {user?.email || "user@example.com"}
             </Typography>
           </Box>
 
           <Divider />
 
-          {/* Profile Menu Item */}
           <MenuItem onClick={handleProfile} sx={{ py: 1.5 }}>
             <ListItemIcon>
               <ProfileIcon fontSize="small" />
@@ -159,7 +168,6 @@ const Header = () => {
 
           <Divider />
 
-          {/* Logout Menu Item */}
           <MenuItem onClick={handleLogout} sx={{ py: 1.5 }}>
             <ListItemIcon>
               <LogoutIcon fontSize="small" />

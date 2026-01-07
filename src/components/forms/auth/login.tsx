@@ -13,7 +13,6 @@ import {
   CircularProgress,
   IconButton,
   InputAdornment,
-  Link,
   TextField,
   Typography,
 } from "@mui/material";
@@ -23,7 +22,8 @@ import { useTranslation } from "react-i18next";
 import { toast } from "react-toastify";
 import { z } from "zod";
 
-import { setAuthTokens } from "@/lib/auth";
+import { VALID_EMAIL, VALID_PASSWORD } from "@/lib";
+import { type User, setAuthTokens, setUser } from "@/lib/auth";
 
 const LoginForm = () => {
   const { t } = useTranslation();
@@ -56,32 +56,51 @@ const LoginForm = () => {
     setIsSubmitting(true);
 
     try {
-      // TODO: Replace with actual API call
-      // Example API call would be:
-      // const response = await authService.login({
-      //   email: formData.email,
-      //   password: formData.password,
-      // });
-
-      // Simulate API call
+      // Simulate API call delay
       await new Promise((resolve) => setTimeout(resolve, 1000));
 
-      console.log("Login attempt with:", { email: formData.email });
+      // Validate credentials
+      if (
+        formData.email !== VALID_EMAIL ||
+        formData.password !== VALID_PASSWORD
+      ) {
+        toast.error(
+          t(
+            "auth.errors.invalidCredentials",
+            "Invalid email or password. Please try again."
+          )
+        );
+        setIsSubmitting(false);
+        return;
+      }
 
-      // Mock tokens - replace with actual tokens from API
+      // Mock successful authentication
       const mockAccessToken = "mock_access_token_" + Date.now();
       const mockRefreshToken = "mock_refresh_token_" + Date.now();
 
-      // Store tokens
+      // Store tokens in cookies
       setAuthTokens(mockAccessToken, mockRefreshToken);
 
-      // Redirect to dashboard
+      // Create user object
+      const user: User = {
+        name: "Quantum User",
+        email: formData.email,
+        phone: "123-456-7890",
+        jobTitle: "Software Engineer",
+        address: "123 Quantum St, Entanglement City",
+      };
+
+      // Store user in localStorage
+      setUser(user);
+
       navigate({ to: "/", replace: true });
     } catch (err) {
       toast.error(
-        t("auth.errors.signInFailed", "Failed to sign in. Please try again.")
+        t(
+          "auth.errors.signInFailed",
+          "An error occurred during login. Please try again."
+        )
       );
-      //
     } finally {
       setIsSubmitting(false);
     }
@@ -170,22 +189,6 @@ const LoginForm = () => {
             />
           )}
         />
-
-        <Box sx={{ textAlign: "center", mb: 3 }}>
-          <Link
-            href="#"
-            underline="hover"
-            sx={{
-              color: "text.secondary",
-              fontSize: "0.875rem",
-              "&:hover": {
-                color: "primary.main",
-              },
-            }}
-          >
-            {t("auth.signIn.forgotPassword")}
-          </Link>
-        </Box>
 
         <Button
           type="submit"
