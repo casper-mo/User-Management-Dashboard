@@ -1,10 +1,20 @@
-import LoginForm from '@/components/forms/auth/login';
-import { createFileRoute } from '@tanstack/react-router';
+import { createFileRoute } from "@tanstack/react-router";
 
-export const Route = createFileRoute('/_auth/login')({
+import { SEO } from "@/components/SEO";
+import LoginForm from "@/components/forms/auth/login";
+
+export const Route = createFileRoute("/_auth/login")({
   component: RouteComponent,
 });
 
 function RouteComponent() {
-  return <LoginForm />;
+  return (
+    <>
+      <SEO
+        title="Login"
+        description="Sign in to your User Management System account to manage users, roles, and permissions."
+      />
+      <LoginForm />
+    </>
+  );
 }

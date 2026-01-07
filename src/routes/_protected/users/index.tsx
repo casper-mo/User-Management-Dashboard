@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
 
-import { Search as SearchIcon, Visibility as VisibilityIcon } from "@mui/icons-material";
+import {
+  Search as SearchIcon,
+  Visibility as VisibilityIcon,
+} from "@mui/icons-material";
 import {
   Box,
   Card,
@@ -21,6 +24,7 @@ import { useTranslation } from "react-i18next";
 import { z } from "zod";
 
 import { type User, fetchUsers, getUserFullName } from "@/api/users";
+import { SEO } from "@/components/SEO";
 import { UserDetailsDialog } from "@/components/dialogs/UserDetailsDialog";
 import { useDebounce } from "@/hooks/use-debounce";
 
@@ -152,90 +156,96 @@ function RouteComponent() {
   ];
 
   return (
-    <Box sx={{ p: 3 }}>
-      {/* Header */}
-      <Box sx={{ mb: 3 }}>
-        <Typography variant="h4" fontWeight="bold" gutterBottom>
-          {t("users.title")}
-        </Typography>
-        <Typography variant="body2" color="text.secondary">
-          {t("users.subtitle")}
-        </Typography>
-      </Box>
-
-      {/* Search Field */}
-      <Box sx={{ mb: 3 }}>
-        <TextField
-          fullWidth
-          placeholder={t("users.search.placeholder")}
-          value={searchInput}
-          onChange={(e) => setSearchInput(e.target.value)}
-          slotProps={{
-            input: {
-              startAdornment: (
-                <InputAdornment position="start">
-                  <SearchIcon color="action" />
-                </InputAdornment>
-              ),
-            },
-          }}
-          sx={{
-            maxWidth: 600,
-            "& .MuiOutlinedInput-root": {
-              bgcolor: "background.paper",
-            },
-          }}
-        />
-      </Box>
-
-      {/* Data Grid */}
-      <Card
-        elevation={0}
-        sx={{
-          border: "1px solid",
-          borderColor: "divider",
-          height: 600,
-        }}
-      >
-        <DataGrid
-          rows={usersData?.users || []}
-          columns={columns}
-          loading={isLoading}
-          getRowId={(row) => row.email}
-          pagination
-          paginationMode="server"
-          paginationModel={{
-            page: page - 1,
-            pageSize: pageSize,
-          }}
-          onPaginationModelChange={handlePaginationChange}
-          pageSizeOptions={[5, 10, 25, 50]}
-          rowCount={300} // Total rows estimate (randomuser.me doesn't provide total)
-          disableRowSelectionOnClick
-          slotProps={{
-            loadingOverlay: {
-              variant: "skeleton",
-              noRowsVariant: "skeleton",
-            },
-          }}
-          sx={{
-            border: 0,
-            "& .MuiDataGrid-cell:focus": {
-              outline: "none",
-            },
-            "& .MuiDataGrid-columnHeader:focus": {
-              outline: "none",
-            },
-          }}
-        />
-      </Card>
-
-      {/* User Details Modal */}
-      <UserDetailsDialog
-        open={isModalOpen}
-        user={selectedUser}
-        onClose={handleCloseModal}
+    <>
+      <SEO
+        title="Users"
+        description="Browse and manage all users in your system. Search, filter, and view detailed user information."
       />
-    </Box>
+      <Box sx={{ p: 3 }}>
+        {/* Header */}
+        <Box sx={{ mb: 3 }}>
+          <Typography variant="h4" fontWeight="bold" gutterBottom>
+            {t("users.title")}
+          </Typography>
+          <Typography variant="body2" color="text.secondary">
+            {t("users.subtitle")}
+          </Typography>
+        </Box>
+
+        {/* Search Field */}
+        <Box sx={{ mb: 3 }}>
+          <TextField
+            fullWidth
+            placeholder={t("users.search.placeholder")}
+            value={searchInput}
+            onChange={(e) => setSearchInput(e.target.value)}
+            slotProps={{
+              input: {
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <SearchIcon color="action" />
+                  </InputAdornment>
+                ),
+              },
+            }}
+            sx={{
+              maxWidth: 600,
+              "& .MuiOutlinedInput-root": {
+                bgcolor: "background.paper",
+              },
+            }}
+          />
+        </Box>
+
+        {/* Data Grid */}
+        <Card
+          elevation={0}
+          sx={{
+            border: "1px solid",
+            borderColor: "divider",
+            height: 600,
+          }}
+        >
+          <DataGrid
+            rows={usersData?.users || []}
+            columns={columns}
+            loading={isLoading}
+            getRowId={(row) => row.email}
+            pagination
+            paginationMode="server"
+            paginationModel={{
+              page: page - 1,
+              pageSize: pageSize,
+            }}
+            onPaginationModelChange={handlePaginationChange}
+            pageSizeOptions={[5, 10, 25, 50]}
+            rowCount={300} // Total rows estimate (randomuser.me doesn't provide total)
+            disableRowSelectionOnClick
+            slotProps={{
+              loadingOverlay: {
+                variant: "skeleton",
+                noRowsVariant: "skeleton",
+              },
+            }}
+            sx={{
+              border: 0,
+              "& .MuiDataGrid-cell:focus": {
+                outline: "none",
+              },
+              "& .MuiDataGrid-columnHeader:focus": {
+                outline: "none",
+              },
+            }}
+          />
+        </Card>
+
+        {/* User Details Modal */}
+        <UserDetailsDialog
+          open={isModalOpen}
+          user={selectedUser}
+          onClose={handleCloseModal}
+        />
+      </Box>
+    </>
   );
 }
