@@ -3,6 +3,9 @@ import type { QueryClient } from "@tanstack/react-query";
 import { Outlet, createRootRouteWithContext } from "@tanstack/react-router";
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
 
+import { ErrorBoundary } from "@/components/errors/ErrorBoundary";
+import { NotFound } from "@/components/errors/NotFound";
+
 import TanStackQueryDevtools from "../integrations/tanstack-query/devtools";
 
 interface MyRouterContext {
@@ -28,4 +31,6 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
       />
     </>
   ),
+  errorComponent: ErrorBoundary,
+  notFoundComponent: NotFound,
 });
