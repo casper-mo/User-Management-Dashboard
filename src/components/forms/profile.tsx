@@ -26,6 +26,8 @@ import { useTranslation } from "react-i18next";
 import { toast } from "react-toastify";
 import { z } from "zod";
 
+import { type User, getUser, setUser } from "@/lib";
+
 interface TabPanelProps {
   children?: React.ReactNode;
   index: number;
@@ -52,6 +54,7 @@ const ProfileForm = () => {
   const { t } = useTranslation();
   const [activeTab, setActiveTab] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const user = getUser() as User;
 
   const profileSchema = z.object({
     name: z
@@ -89,12 +92,12 @@ const ProfileForm = () => {
   } = useForm<ProfileFormData>({
     resolver: zodResolver(profileSchema),
     defaultValues: {
-      name: "",
-      phone: "",
-      address: "",
-      jobTitle: "",
-      yearsOfExperience: 0,
-      workingHours: 40,
+      name: user.name,
+      phone: user.phone,
+      address: user?.address || "",
+      jobTitle: user?.jobTitle || "",
+      yearsOfExperience: user.yearOfExperience || 0,
+      workingHours: user.workingHours || 1,
     },
   });
 
@@ -111,16 +114,20 @@ const ProfileForm = () => {
       // Simulate API call
       await new Promise((resolve) => setTimeout(resolve, 1500));
 
-      // Randomly simulate success/error for demo purposes
-      const isSuccess = Math.random() > 0.2;
+      // update user object in localStorage
+      const updatedUser = {
+        ...user,
+        name: formData.name,
+        phone: formData.phone,
+        address: formData.address,
+        jobTitle: formData.jobTitle,
+        yearOfExperience: formData.yearsOfExperience,
+        workingHours: formData.workingHours,
+      };
 
-      if (isSuccess) {
-        console.log("Profile updated with:", formData);
-        toast.success(t("profile.success.saved"));
-      } else {
-        // Simulate backend error
-        throw new Error("Backend error");
-      }
+      setUser(updatedUser);
+
+      toast.success(t("profile.success.save"));
     } catch (err) {
       toast.error(t("profile.errors.saveFailed"));
       console.error("Profile update error:", err);
