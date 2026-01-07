@@ -100,6 +100,7 @@ export const fetchUsers = async (
   const queryParams: Record<string, string | number> = {
     page,
     results,
+    inc: "gender,name,email,phone,location,picture,id",
   };
 
   if (seed) queryParams.seed = seed;
