@@ -2,6 +2,17 @@
 
 A modern, full-featured user management dashboard built with React, TypeScript, and Material-UI. This application provides a complete solution for managing users with authentication, data fetching, internationalization, and comprehensive testing.
 
+## 🌐 Live Demo
+
+**🚀 [View Live Application](https://user-management-dashboard-wine-chi.vercel.app/)**
+
+### Test Credentials
+
+- **Email**: `q@quantum.io`
+- **Password**: `qTask123#`
+
+> Try out all features including user management, search, pagination, theme switching, and more!
+
 ## 📋 Table of Contents
 
 - [Features](#-features)
