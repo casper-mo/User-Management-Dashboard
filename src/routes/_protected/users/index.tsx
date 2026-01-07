@@ -93,6 +93,7 @@ function RouteComponent() {
         searchTerm: search,
         seed: "user-management",
       }),
+    staleTime: 5 * 60 * 1000, // 5 minutes
   });
 
   const handlePaginationChange = (model: GridPaginationModel) => {
