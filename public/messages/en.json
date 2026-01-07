@@ -67,5 +67,42 @@
     "errors": {
       "saveFailed": "Failed to update profile. Please try again."
     }
+  },
+  "breadcrumb": {
+    "dashboard": "Dashboard",
+    "home": "Home",
+    "users": "Users",
+    "profile": "Profile",
+    "login": "Login"
+  },
+  "users": {
+    "title": "Users Management",
+    "subtitle": "Manage and view all users in the system",
+    "search": {
+      "placeholder": "Search users by name..."
+    },
+    "columns": {
+      "fullName": "Full Name",
+      "email": "Email",
+      "city": "City",
+      "country": "Country",
+      "actions": "Actions"
+    },
+    "actions": {
+      "viewDetails": "View Details"
+    },
+    "modal": {
+      "title": "User Details",
+      "fields": {
+        "fullName": "Full Name",
+        "email": "Email Address",
+        "phone": "Phone Number",
+        "address": "Address"
+      },
+      "close": "Close"
+    },
+    "errors": {
+      "loadFailed": "Failed to load users. Please try again."
+    }
   }
 }
