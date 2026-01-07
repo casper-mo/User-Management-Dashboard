@@ -1,5 +1,5 @@
 import { Home as HomeIcon, NavigateNext } from "@mui/icons-material";
-import { Breadcrumbs, Link, Typography } from "@mui/material";
+import { Box, Breadcrumbs, Link, Typography } from "@mui/material";
 import { useMatches, useNavigate } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
 
@@ -20,11 +20,18 @@ const Breadcrumb = () => {
     const relevantMatches = matches.filter(
       (match) =>
         match.pathname !== "/" &&
-        !match.pathname.startsWith("/_") &&
-        match.pathname !== ""
+        match.pathname !== "" &&
+        !match.pathname.startsWith("/login")
     );
 
-    if (relevantMatches.length === 0) {
+    const isDashboard = relevantMatches.length === 0;
+
+    if (isDashboard) {
+      segments.push({
+        label: t("breadcrumb.dashboard"),
+        path: "/",
+        isLast: true,
+      });
       return segments;
     }
 
@@ -55,13 +62,13 @@ const Breadcrumb = () => {
 
   const breadcrumbSegments = getBreadcrumbSegments();
 
-  if (breadcrumbSegments.length === 0) {
-    return null;
-  }
-
   const handleNavigate = (path: string) => {
     navigate({ to: path });
   };
+
+  // Check if we're on the dashboard/home page
+  const isDashboardOnly =
+    breadcrumbSegments.length === 1 && breadcrumbSegments[0].path === "/";
 
   return (
     <Breadcrumbs
@@ -73,68 +80,92 @@ const Breadcrumb = () => {
         },
       }}
     >
-      <Link
-        component="button"
-        onClick={() => handleNavigate("/users")}
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          color: "text.secondary",
-          textDecoration: "none",
-          cursor: "pointer",
-          "&:hover": {
-            color: "primary.main",
-            textDecoration: "underline",
-          },
-          border: "none",
-          background: "none",
-          padding: 0,
-          font: "inherit",
-        }}
-      >
-        <HomeIcon sx={{ mr: 0.5, fontSize: "1.25rem" }} />
-        <Typography variant="body2" sx={{ fontWeight: 500 }}>
-          {t("breadcrumb.home")}
-        </Typography>
-      </Link>
+      {!isDashboardOnly && (
+        <Link
+          component="button"
+          onClick={() => handleNavigate("/")}
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            color: "text.secondary",
+            textDecoration: "none",
+            cursor: "pointer",
+            "&:hover": {
+              color: "primary.main",
+              textDecoration: "underline",
+            },
+            border: "none",
+            background: "none",
+            padding: 0,
+            font: "inherit",
+          }}
+        >
+          <HomeIcon sx={{ mr: 0.5, fontSize: "1.25rem" }} />
+          <Typography variant="body2" sx={{ fontWeight: 500 }}>
+            {t("breadcrumb.home") !== "breadcrumb.home"
+              ? t("breadcrumb.home")
+              : "Home"}
+          </Typography>
+        </Link>
+      )}
 
-      {breadcrumbSegments.map((segment) =>
-        segment.isLast ? (
+      {/* Show dashboard label with home icon if on dashboard */}
+      {isDashboardOnly && (
+        <Box sx={{ display: "flex", alignItems: "center" }}>
+          <HomeIcon
+            sx={{ mr: 0.5, fontSize: "1.25rem", color: "text.primary" }}
+          />
           <Typography
-            key={segment.path}
             variant="body2"
             sx={{
               color: "text.primary",
               fontWeight: 600,
             }}
           >
-            {segment.label}
+            {breadcrumbSegments[0].label}
           </Typography>
-        ) : (
-          <Link
-            key={segment.path}
-            component="button"
-            onClick={() => handleNavigate(segment.path)}
-            sx={{
-              color: "text.secondary",
-              textDecoration: "none",
-              cursor: "pointer",
-              "&:hover": {
-                color: "primary.main",
-                textDecoration: "underline",
-              },
-              border: "none",
-              background: "none",
-              padding: 0,
-              font: "inherit",
-            }}
-          >
-            <Typography variant="body2" sx={{ fontWeight: 500 }}>
+        </Box>
+      )}
+
+      {/* Show other breadcrumb segments */}
+      {!isDashboardOnly &&
+        breadcrumbSegments.map((segment) =>
+          segment.isLast ? (
+            <Typography
+              key={segment.path}
+              variant="body2"
+              sx={{
+                color: "text.primary",
+                fontWeight: 600,
+              }}
+            >
               {segment.label}
             </Typography>
-          </Link>
-        )
-      )}
+          ) : (
+            <Link
+              key={segment.path}
+              component="button"
+              onClick={() => handleNavigate(segment.path)}
+              sx={{
+                color: "text.secondary",
+                textDecoration: "none",
+                cursor: "pointer",
+                "&:hover": {
+                  color: "primary.main",
+                  textDecoration: "underline",
+                },
+                border: "none",
+                background: "none",
+                padding: 0,
+                font: "inherit",
+              }}
+            >
+              <Typography variant="body2" sx={{ fontWeight: 500 }}>
+                {segment.label}
+              </Typography>
+            </Link>
+          )
+        )}
     </Breadcrumbs>
   );
 };
